@@ -1,0 +1,67 @@
+
+name: tourism-mlops-pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+    env:
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      HF_USERNAME: ${{ secrets.HF_USERNAME }}
+      HF_DATASET_REPO: ${{ secrets.HF_DATASET_REPO }}
+      HF_MODEL_REPO: ${{ secrets.HF_MODEL_REPO }}
+      HF_SPACE_REPO: ${{ secrets.HF_SPACE_REPO }}
+      MLFLOW_TRACKING_URI: file:./mlruns
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Data Registration (upload raw CSV to HF Datasets)
+        run: |
+          python src/data_register.py
+
+      - name: Data Preparation (load from HF, clean, split, upload processed)
+        run: |
+          python src/prepare_data.py
+
+      - name: Model Training + Tuning + Evaluation + HF Model Registration
+        run: |
+          python src/train.py
+
+      - name: Publish Streamlit Space
+        run: |
+          python src/deploy_space.py
+
+      - name: Commit & Push generated reports to main
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add reports/ mlruns/ models/
+          git commit -m "Auto-update: reports, mlruns, models [skip ci]" || echo "No changes to commit"
+          git push
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: training-artifacts
+          path: |
+            reports/
+            models/
+            mlruns/
