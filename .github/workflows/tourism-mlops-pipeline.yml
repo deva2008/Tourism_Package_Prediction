@@ -93,15 +93,12 @@ jobs:
           cd "${{ steps.roots.outputs.proj }}"
           python src/deploy_space.py
 
-      - name: Commit artifacts (reports/models/mlruns) back to main
         uses: EndBug/add-and-commit@v9
         with:
           add: |
             ${{ steps.roots.outputs.proj }}/reports
             ${{ steps.roots.outputs.proj }}/models
-            ${{ steps.roots.outputs.proj }}/mlruns
           author_name: github-actions[bot]
           author_email: 41898282+github-actions[bot]@users.noreply.github.com
-          message: "CI: add reports/models/mlruns from run ${{ github.run_id }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
