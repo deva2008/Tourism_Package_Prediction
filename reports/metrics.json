@@ -1,0 +1,41 @@
+{
+  "best_model": "RandomForest",
+  "best_val_f1": 0.7352941176470589,
+  "threshold": 0.26,
+  "test_metrics": {
+    "roc_auc": 0.9364091539136093,
+    "auprc": 0.8096485902059607,
+    "accuracy": 0.8813559322033898,
+    "precision": 0.6517412935323383,
+    "recall": 0.8238993710691824,
+    "f1": 0.7277777777777777
+  },
+  "candidates": [
+    {
+      "model": "DecisionTree",
+      "val_best_f1": 0.6435331230283912,
+      "threshold": 0.1
+    },
+    {
+      "model": "RandomForest",
+      "val_best_f1": 0.7352941176470589,
+      "threshold": 0.26
+    },
+    {
+      "model": "AdaBoost",
+      "val_best_f1": 0.5575757575757576,
+      "threshold": 0.44000000000000006
+    },
+    {
+      "model": "GradientBoosting",
+      "val_best_f1": 0.7183908045977011,
+      "threshold": 0.18
+    },
+    {
+      "model": "XGBoost",
+      "val_best_f1": 0.7058823529411765,
+      "threshold": 0.26
+    }
+  ],
+  "timestamp": 1758955406
+}

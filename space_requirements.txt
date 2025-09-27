@@ -1,5 +1,5 @@
 pandas
-scikit-learn
-huggingface_hub>=0.21.0
-joblib
+scikit-learn==1.6.1
+joblib==1.5.2
+huggingface_hub>=0.24.6
 streamlit

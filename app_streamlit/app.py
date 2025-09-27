@@ -1,5 +1,7 @@
 
 import streamlit as st
+from pathlib import Path
+Path.home().joinpath('.streamlit').mkdir(parents=True, exist_ok=True)
 import pandas as pd
 import json
 import joblib
