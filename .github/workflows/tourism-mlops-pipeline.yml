@@ -87,12 +87,13 @@ jobs:
         run: |
           cd "${{ steps.roots.outputs.proj }}"
           python src/train.py
-
+          
       - name: Deploy / update Streamlit Space
         run: |
           cd "${{ steps.roots.outputs.proj }}"
           python src/deploy_space.py
 
+      - name: Commit artifacts (reports/models) back to main
         uses: EndBug/add-and-commit@v9
         with:
           add: |
@@ -100,5 +101,6 @@ jobs:
             ${{ steps.roots.outputs.proj }}/models
           author_name: github-actions[bot]
           author_email: 41898282+github-actions[bot]@users.noreply.github.com
+          message: "CI: add reports/models from run ${{ github.run_id }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
