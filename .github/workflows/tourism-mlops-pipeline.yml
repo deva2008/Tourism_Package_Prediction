@@ -5,6 +5,9 @@ on:
     branches: [ main ]
   workflow_dispatch: {}
 
+permissions:
+  contents: write
+
 env:
   HF_TOKEN: ${{ secrets.HF_TOKEN }}
   HF_USERNAME: ${{ secrets.HF_USERNAME }}
